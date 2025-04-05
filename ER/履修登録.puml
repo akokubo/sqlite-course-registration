@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+skinparam defaultFontName Consolas
+left to right direction
+skinparam classAttributeIconSize 0
+hide circle
+
+entity "学科" as departments {
+    ID : INTEGER <<PK>>
+    --
+    名前 : VARCHAR
+}
+
+entity "学生" as students {
+    ID : INTEGER <<PK>>
+    --
+    名前 : VARCHAR
+    カナ : VARCHAR
+    学科ID : INTEGER <<FK>>
+}
+
+entity "教員" as teachers {
+    ID : INTEGER <<PK>>
+    --
+    名前 : VARCHAR
+    カナ : VARCHAR
+    学科ID : INTEGER <<FK>>
+}
+
+entity "科目" as courses {
+    ID : INTEGER <<PK>>
+    --
+    名前 : VARCHAR
+    学科ID : INTEGER <<FK>>
+    教員ID : INTEGER <<FK>>
+    単位数 : INTEGER
+}
+
+entity "成績" as grades {
+    ID : INTEGER <<PK>>
+    --
+    学生ID : INTEGER <<FK>>
+    科目ID : INTEGER <<FK>>
+    成績 : CHAR(1)
+}
+
+departments  ||--o{ students : "所属する"
+departments  ||--o{ teachers : "所属する"
+departments  ||--o{ courses : "開講する"
+students  ||--o{ grades : "取得する"
+teachers  ||--o{ courses : "担当する"
+courses  ||--o{ grades : "持つ"
+
+@enduml
